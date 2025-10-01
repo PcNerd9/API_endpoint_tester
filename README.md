@@ -44,7 +44,7 @@ Each field in the output can have a **metadata property** that defines the compa
      "reason": "endpoint error",
      "response": { ... }  // actual response
    }
-```
+    ```
 
 3. If the endpoint succeeds:
    - Compare output types with expected annotations.
@@ -58,7 +58,7 @@ Each field in the output can have a **metadata property** that defines the compa
     }
 ```
 
---- 
+---  
 ##  📝 Example
 
 **Endpoint**

@@ -38,13 +38,13 @@ Each field in the output can have a **metadata property** that defines the compa
    - **`method`** → HTTP method (GET, POST, etc.).
    - **`request_body`** → Request payload (if required).
 2. If the endpoint **fails**, return:
-   ```json
-   {
-     "status": "fail",
-     "reason": "endpoint error",
-     "response": { ... }  // actual response
-   }
-    ```
+```json
+{
+    "status": "fail",
+    "reason": "endpoint error",
+    "response": { ... }  // actual response
+}
+```
 
 3. If the endpoint succeeds:
    - Compare output types with expected annotations.
@@ -52,11 +52,11 @@ Each field in the output can have a **metadata property** that defines the compa
    - If any comparison fails, return structured error with reason.
 
 4. If all checks pass:
-    ```json
-    {
-    "status": "pass"
-    }
-    ```
+```json
+{
+"status": "pass"
+}
+```
 
 ---  
 ##  📝 Example

@@ -35,8 +35,8 @@ Each field in the output can have a **metadata property** that defines the compa
 ## 🔄 Flow (Pseudocode)
 
 1. Call the API endpoint with:
-   - **`method`** → HTTP method (GET, POST, etc.).
-   - **`request_body`** → Request payload (if required).
+    - **`method`** → HTTP method (GET, POST, etc.).
+    - **`request_body`** → Request payload (if required).
 2. If the endpoint **fails**, return:
 ```json
 {
@@ -47,9 +47,9 @@ Each field in the output can have a **metadata property** that defines the compa
 ```
 
 3. If the endpoint succeeds:
-   - Compare output types with expected annotations.
-   - If field type is iterable (list/tuple), loop through and validate each item.
-   - If any comparison fails, return structured error with reason.
+    - Compare output types with expected annotations.
+    - If field type is iterable (list/tuple), loop through and validate each item.
+    - If any comparison fails, return structured error with reason.
 
 4. If all checks pass:
 ```json

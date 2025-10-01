@@ -56,7 +56,7 @@ Each field in the output can have a **metadata property** that defines the compa
     {
     "status": "pass"
     }
-```
+    ```
 
 ---  
 ##  📝 Example

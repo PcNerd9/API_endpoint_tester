@@ -157,7 +157,7 @@ def main():
     
     test3_result = test3()
     if test3_result:
-        scode += 1
+        score += 1
     print("Total score: ",score)
     
     

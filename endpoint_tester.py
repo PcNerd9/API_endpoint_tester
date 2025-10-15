@@ -1,7 +1,9 @@
 from dataclasses import dataclass, fields, is_dataclass
 from datetime import datetime
 from dateutil import parser
+from pydantic import EmailStr
 import pytz 
+import re
 import requests
 from time import perf_counter
 from typing import Annotated, Any, Dict, get_args, get_origin, Optional,  TypeVar
@@ -163,7 +165,7 @@ class EndpointTester:
             if actual_value == "missing":
                 return {"status": "fail", "field": f.name, "reason": "field is missing in the actual response"}
             
-
+            # Handle List or Tuple type
             if get_origin(type_) is list or get_origin(type_) is tuple:
                 if not isinstance(actual_value, (list, tuple)):
                     return {"status": "fail", "field": f.name, "rL[Useason": f"Expected {type_}, got {type(actual_value)}"}
@@ -185,6 +187,7 @@ class EndpointTester:
                 
                 continue
             
+            # run recursively if type is a dataclass
             if is_dataclass(type_):
                 result = self.validate_response(type_, actual_value)
                 if result["status"] == "fail":
@@ -194,14 +197,23 @@ class EndpointTester:
             
             expected_value = getattr(expected_cls, f.name)
             
+            # Handle datetime, by converting the str to datetime object for proper comparison
             if type_ is datetime:
                 actual_value = self.date_parser(actual_value, rule.split()[1:])
                 if actual_value is None:
                     return {"status": "fail", "field": f.name, "reason": "field not a valid datetime"}
+                
                 if isinstance(expected_value, str):
                     expected_value = self.date_parser(expected_value, rule.split()[1:])
                     if expected_value is None:
                         return {"status": "fail", "field": f.name, "reason": "expected datetime value is not in a valid format"}
+            
+            # Check for email field
+            if type_ is EmailStr:                
+                email_pattern = re.compile(r"^[^@]+@[^@]+\.[^@]+$")
+                if not isinstance(actual_value, str) or not email_pattern.match(actual_value):
+                    return {"status": "fail", "field": f.name, "reason": f"Invalid email format: {actual_value}"}
+                type_ = str
                 
             ok, reason = self.compare_value(type_, rule.split()[0], expected_value, actual_value)
             
@@ -275,8 +287,4 @@ class EndpointTester:
             return {"status": "fail", "reason": f"Expected speedup is {expected_speedup}, got {speedup}"}
         
         return {"status": "pass"}
-
-            
-        
-
 
